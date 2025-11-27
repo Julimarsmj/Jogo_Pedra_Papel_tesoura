@@ -5,6 +5,10 @@
  */
 package br.com.jogo.telas;
 
+import br.com.jogo.dal.ModeloConexao;
+import java.sql.Connection;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Julimar
@@ -14,6 +18,9 @@ public class TelaCadJogador extends javax.swing.JFrame {
     /**
      * Creates new form TelaCadJogador
      */
+    
+    public static int idJogadorAtual = 0;
+    
     public TelaCadJogador() {
         initComponents();
     }
@@ -29,7 +36,7 @@ public class TelaCadJogador extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        txtJogador = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         btnInicial = new javax.swing.JButton();
         btnSalvar = new javax.swing.JButton();
@@ -44,7 +51,7 @@ public class TelaCadJogador extends javax.swing.JFrame {
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/jogo/img/icone_jogador.png"))); // NOI18N
         jLabel1.setText("jLabel1");
 
-        jTextField1.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
+        txtJogador.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/jogo/img/jogador.png"))); // NOI18N
 
@@ -80,7 +87,7 @@ public class TelaCadJogador extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnSalvar))
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 343, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtJogador, javax.swing.GroupLayout.PREFERRED_SIZE, 343, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(60, Short.MAX_VALUE))
         );
@@ -98,7 +105,7 @@ public class TelaCadJogador extends javax.swing.JFrame {
                         .addGap(78, 78, 78)
                         .addComponent(jLabel2)
                         .addGap(18, 18, 18)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(txtJogador, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnInicial, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -117,6 +124,41 @@ public class TelaCadJogador extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    public void nomeJogador() {
+        String nome = txtJogador.getText().trim().toUpperCase();
+        if (nome.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "INFORME O NOME DO JOGADOR", "ERRO NO CADASTRO", JOptionPane.WARNING_MESSAGE);
+            txtJogador.requestFocus();
+        } else {
+            String sql = "insert into tbjogador (nomejogador) values (?)";
+            try (Connection conexaoAtual = ModeloConexao.conector();
+                    java.sql.PreparedStatement pst = conexaoAtual.prepareStatement(
+                            sql,
+                            java.sql.Statement.RETURN_GENERATED_KEYS
+                    )) {
+
+                pst.setString(1, txtJogador.getText().trim().toUpperCase());
+                int adicionar = pst.executeUpdate();
+
+                if (adicionar > 0) {
+                    try (java.sql.ResultSet rs = pst.getGeneratedKeys()) {
+                        if (rs.next()) {
+                            idJogadorAtual = rs.getInt(1);
+                            System.out.println("ID do Jogador Capturado: " + idJogadorAtual);
+                        }
+                    }
+
+                    JOptionPane.showMessageDialog(null, "JOGADOR CADASTRADO COM SUCESSO!");
+                    TelaJogo jogo = new TelaJogo();
+                    jogo.setVisible(true);
+                    this.setVisible(false);
+                }
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "ERRO NO CADASTRO/CONEXÃO: " + e.getMessage(), "ATENÇÃO", JOptionPane.WARNING_MESSAGE);
+            }
+        }
+    }
+
     private void btnInicialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInicialActionPerformed
         TelaInicial inicial = new TelaInicial();
         inicial.setVisible(true);
@@ -124,9 +166,7 @@ public class TelaCadJogador extends javax.swing.JFrame {
     }//GEN-LAST:event_btnInicialActionPerformed
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
-        TelaJogo jogo = new TelaJogo();
-        jogo.setVisible(true);
-        this.setVisible(false);
+        nomeJogador();
     }//GEN-LAST:event_btnSalvarActionPerformed
 
     /**
@@ -171,6 +211,6 @@ public class TelaCadJogador extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField txtJogador;
     // End of variables declaration//GEN-END:variables
 }
