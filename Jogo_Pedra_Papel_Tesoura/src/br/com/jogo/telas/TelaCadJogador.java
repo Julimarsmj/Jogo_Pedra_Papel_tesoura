@@ -60,6 +60,11 @@ public class TelaCadJogador extends javax.swing.JFrame {
         btnSalvar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/jogo/img/salva.png"))); // NOI18N
         btnSalvar.setToolTipText("Salvar nome");
         btnSalvar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnSalvar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSalvarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -117,6 +122,12 @@ public class TelaCadJogador extends javax.swing.JFrame {
         inicial.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_btnInicialActionPerformed
+
+    private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
+        TelaJogo jogo = new TelaJogo();
+        jogo.setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_btnSalvarActionPerformed
 
     /**
      * @param args the command line arguments
