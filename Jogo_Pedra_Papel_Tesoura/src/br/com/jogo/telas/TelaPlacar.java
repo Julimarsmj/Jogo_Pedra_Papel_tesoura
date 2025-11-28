@@ -82,6 +82,7 @@ public class TelaPlacar extends javax.swing.JFrame {
         setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        jTableRanking.setFont(new java.awt.Font("Dialog", 0, 16)); // NOI18N
         jTableRanking.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null}
@@ -92,7 +93,7 @@ public class TelaPlacar extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(jTableRanking);
 
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(54, 174, 550, 325));
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 180, 610, 325));
 
         btnInicial.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/jogo/img/paginaInicial.png"))); // NOI18N
         btnInicial.setToolTipText("Página Inicial");

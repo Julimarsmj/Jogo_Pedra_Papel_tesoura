@@ -51,7 +51,7 @@ public class TelaCadJogador extends javax.swing.JFrame {
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/jogo/img/icone_jogador.png"))); // NOI18N
         jLabel1.setText("jLabel1");
 
-        txtJogador.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
+        txtJogador.setFont(new java.awt.Font("Dialog", 0, 24)); // NOI18N
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/jogo/img/jogador.png"))); // NOI18N
 
